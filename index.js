@@ -346,7 +346,7 @@ async function fetchQuote() {
     const api = getApiResource();
     console.log("api:", api);
 
-    const response = await fetch(api.endpoint);
+    const response = await fetch(api.endpoint, { headers: { "Access-Control-Allow-Origin": "*" } });
     let rsData = await response.json();
     console.log("rsData: ", rsData);
     let quote = api.getBody(rsData);
