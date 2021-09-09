@@ -21,7 +21,7 @@ const getApiResource = () => {
             },
         },
         {
-            endpoint: "http://api.forismatic.com/api/1.0/?method=getQuote&format=json&lang=en",
+            endpoint: "https://api.forismatic.com/api/1.0/?method=getQuote&format=json&lang=en",
             getBody: (res_json) => {
                 return {
                     text: res_json.quoteText,
