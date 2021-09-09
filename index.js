@@ -16,7 +16,7 @@ const getApiResource = () => {
                 return {
                     text: res_json.quote,
                     author: `${res_json.anime} - ${res_json.character}`,
-                    url: this.endpoint,
+                    url: "https://animechan.vercel.app/api/random",
                 };
             },
         },
@@ -36,7 +36,7 @@ const getApiResource = () => {
                 return {
                     text: res_json.quote,
                     author: res_json.author,
-                    url: this.endpoint,
+                    url: "https://inspiration.goprogram.ai",
                 };
             },
         },
@@ -46,7 +46,7 @@ const getApiResource = () => {
                 return {
                     text: res_json.content,
                     author: res_json.author,
-                    url: this.endpoint,
+                    url: "https://api.quotable.io/random",
                 };
             },
         },
@@ -56,7 +56,7 @@ const getApiResource = () => {
                 return {
                     text: res_json.quote,
                     author: `${res_json.show} - ${res_json.role}`,
-                    url: this.endpoint,
+                    url: "https://movie-quote-api.herokuapp.com/v1/quote/",
                 };
             },
         },
@@ -66,7 +66,7 @@ const getApiResource = () => {
                 return {
                     text: res_json.data.quote,
                     author: res_json.data.author,
-                    url: this.endpoint,
+                    url: "https://api.themotivate365.com/stoic-quote",
                 };
             },
         },
@@ -85,7 +85,7 @@ const getApiResource = () => {
     return APIs[randomApiIndex];
 };
 
-const fetchQuote = () => {
+async function fetchQuote() {
     /*
         const quotes = [
         {
@@ -344,20 +344,24 @@ const fetchQuote = () => {
     // const quote = quotes[randomIndex];
 
     const api = getApiResource();
-    fetch(api.endpoint)
-        .then(response => api.getBody(response.json()))
-        .then(quote => {
-            const quoteElement = document.getElementById('quote');
-            const authorElement = document.getElementById('author');
-            const linkElement = document.getElementById('quote-url');
-            quoteElement.innerText = quote.text;
-            authorElement.innerText = quote.author;
-            linkElement.setAttribute('href', quote.url);
-            linkElement.setAttribute('title', `By ${quote.author}`);
-            hideLoading();
-            showQuote();
-        });
-};
+    console.log("api:", api);
+
+    const response = await fetch(api.endpoint);
+    let rsData = await response.json();
+    console.log("rsData: ", rsData);
+    let quote = api.getBody(rsData);
+
+    console.log(quote);
+    const quoteElement = document.getElementById('quote');
+    const authorElement = document.getElementById('author');
+    const linkElement = document.getElementById('quote-url');
+    quoteElement.innerText = quote.text;
+    authorElement.innerText = quote.author;
+    linkElement.setAttribute('href', quote.url);
+    linkElement.setAttribute('title', `By ${quote.author}`);
+    hideLoading();
+    showQuote();
+}
 
 window.addEventListener('load', () => {
     fetchQuote();
